@@ -1,8 +1,11 @@
 package programm;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+//import java.sql.Connection;
+//import java.sql.DriverManager;
+//import java.sql.SQLException;
+import java.sql.*;
+
+
 
 public class MainOrg extends javax.swing.JFrame {
 
@@ -142,7 +145,20 @@ public class MainOrg extends javax.swing.JFrame {
             String url = "jdbc:sqlite:base.sqlite";
             // create a connection to the database
             conn = DriverManager.getConnection(url);
-
+            Statement stmt = null;
+            
+            stmt = conn.createStatement();
+         String sql = "CREATE TABLE COMPANY " +
+                        "(ID INT PRIMARY KEY     NOT NULL," +
+                        " NAME           TEXT    NOT NULL, " + 
+                        " BANK            TEXT    NOT NULL, " +
+                        " SCHET            TEXT    NOT NULL, " +
+                        " DIREKTOR        TEXT    NOT NULL, " + 
+                        " GLBUH         TEXT    NOT NULL" + ")"; 
+         stmt.executeUpdate(sql);
+         stmt.close();           
+            
+            
             System.out.println("Connection to SQLite has been established.");
 
         } catch (SQLException e) {
