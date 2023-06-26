@@ -175,7 +175,7 @@ public class MainOrg extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // закрыть форму
+        this.dispose();         // закрыть форму
     }//GEN-LAST:event_jButton3ActionPerformed
 
     public static void main(String args[]) {
