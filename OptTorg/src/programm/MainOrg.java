@@ -12,7 +12,7 @@ public class MainOrg extends javax.swing.JFrame {
         setTitle("Настройка реквизитов организации");
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         //
-try {
+        try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
             System.out.println("Unable to load class.");
@@ -36,17 +36,17 @@ try {
                     + " GLBUH         TEXT    NOT NULL" + ")";
             stmt.executeUpdate(sql);
             stmt.close();
-            
+
             stmt = conn.createStatement();
-            sql ="select * from COMPANY";
-            ResultSet rs=stmt.executeQuery(sql);
-            while (rs.next()){
+            sql = "select * from COMPANY";
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
                 jTextField7.setText(rs.getString("NAME"));
                 jTextField10.setText(rs.getString("BANK"));
                 jTextField11.setText(rs.getString("SCHET"));
-            }        
+            }
             stmt.close();
-            } catch (SQLException e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
             try {
@@ -209,11 +209,11 @@ try {
             stmt.close();
             stmt = conn.createStatement();
             sql = "insert into COMPANY values"
-                    + "(0, '"+jTextField7.getText()+"', '"+
-                     jTextField10.getText()+ "', '"+
-                     jTextField11.getText()+ "', '"+
-                     jComboBox3.getItemAt(jComboBox3.getSelectedIndex())+ "', '"+
-                     jComboBox4.getItemAt(jComboBox4.getSelectedIndex())+ "')";
+                    + "(0, '" + jTextField7.getText() + "', '"
+                    + jTextField10.getText() + "', '"
+                    + jTextField11.getText() + "', '"
+                    + jComboBox3.getItemAt(jComboBox3.getSelectedIndex()) + "', '"
+                    + jComboBox4.getItemAt(jComboBox4.getSelectedIndex()) + "')";
             stmt.executeUpdate(sql);
             stmt.close();
 
