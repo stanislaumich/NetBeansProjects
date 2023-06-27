@@ -8,8 +8,10 @@ import java.sql.Statement;
 import javax.swing.table.*;
 
 public class Graph extends javax.swing.JFrame {
-String oldName = "";
-    private void filltable() {
+
+    String oldName = "";
+
+    private void createtable() {
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
@@ -29,8 +31,36 @@ String oldName = "";
                     + " OBED           TEXT    NOT NULL" + ")";
             stmt.executeUpdate(sql);
             stmt.close();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+
+    }
+
+    private void filltable() {
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Unable to load class.");
+            e.printStackTrace();
+        }
+        Connection conn = null;
+        try {
+            String url = "jdbc:sqlite:base.sqlite";
+            conn = DriverManager.getConnection(url);
+            Statement stmt = null;
+            createtable();
             stmt = conn.createStatement();
-            sql = "select count(*) C from GRAPH";
+            String sql = "select count(*) C from GRAPH";
             ResultSet rs = stmt.executeQuery(sql);
             int rowcount = rs.getInt("C");
             sql = "select * from GRAPH";
@@ -64,7 +94,7 @@ String oldName = "";
 
     public Graph() {
         initComponents();
-        setTitle("Настройка графиков");
+        setTitle("Настройка графиков работы сотрудников");
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         filltable();
     }
@@ -148,42 +178,43 @@ String oldName = "";
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 6, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2)
-                                .addGap(9, 9, 9)
-                                .addComponent(jButton3))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField2)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField3)))
-                        .addGap(18, 18, 18)
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField1))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jButton1)))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jButton4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButton2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButton3)
+                                        .addGap(0, 18, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jTextField2)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jTextField3)))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(jButton1)))))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -232,18 +263,11 @@ String oldName = "";
             String url = "jdbc:sqlite:base.sqlite";
             conn = DriverManager.getConnection(url);
             Statement stmt = null;
-            stmt = conn.createStatement();
-            String sql = "CREATE TABLE IF NOT EXISTS GRAPH ("
-                    + " NAME           TEXT    NOT NULL, "
-                    + " BEG            TEXT    NOT NULL, "
-                    + " END            TEXT    NOT NULL, "
-                    + " OBED           TEXT    NOT NULL" + ")";
-            stmt.executeUpdate(sql);
-            stmt.close();
+            createtable();
             stmt = conn.createStatement();
             //System.out.println(jTable1.getValueAt(i, 0));
-            sql = "delete from GRAPH where NAME='"
-                    + jTextField1.getText()+"'";
+            String sql = "delete from GRAPH where NAME='"
+                    + jTextField1.getText() + "'";
             stmt.executeUpdate(sql);
             stmt.close();
             filltable();
@@ -281,17 +305,10 @@ String oldName = "";
             String url = "jdbc:sqlite:base.sqlite";
             conn = DriverManager.getConnection(url);
             Statement stmt = null;
-            stmt = conn.createStatement();
-            String sql = "CREATE TABLE IF NOT EXISTS GRAPH ("
-                    + " NAME           TEXT    NOT NULL, "
-                    + " BEG            TEXT    NOT NULL, "
-                    + " END            TEXT    NOT NULL, "
-                    + " OBED           TEXT    NOT NULL" + ")";
-            stmt.executeUpdate(sql);
-            stmt.close();
+            createtable();
             stmt = conn.createStatement();
             //System.out.println(jTable1.getValueAt(i, 0));
-            sql = "insert into GRAPH values('"
+            String sql = "insert into GRAPH values('"
                     + jTextField1.getText() + "', '"
                     + jTextField2.getText() + "', '"
                     + jTextField3.getText() + "', '"
@@ -354,7 +371,7 @@ String oldName = "";
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
-        }        
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
