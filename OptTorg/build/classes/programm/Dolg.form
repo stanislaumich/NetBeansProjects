@@ -44,7 +44,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Component id="jScrollPane1" min="-2" pref="186" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="72" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -65,8 +65,7 @@
         <Component class="javax.swing.JTable" name="jTable1">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="4" rowCount="1">
-                <Column editable="false" title="&#x2116;" type="java.lang.Integer"/>
+              <Table columnCount="3" rowCount="1">
                 <Column editable="true" title="&#x414;&#x43e;&#x43b;&#x436;&#x43d;&#x43e;&#x441;&#x442;&#x44c;" type="java.lang.String"/>
                 <Column editable="true" title="&#x41e;&#x43a;&#x43b;&#x430;&#x434;" type="java.lang.String"/>
                 <Column editable="true" title="% &#x41f;&#x440;&#x435;&#x43c;&#x438;&#x438;" type="java.lang.String"/>
