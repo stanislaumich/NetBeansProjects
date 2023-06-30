@@ -707,7 +707,7 @@ public class Tovar extends javax.swing.JFrame {
             //JOptionPane.showMessageDialog(null, res);
             stmt.close();
             stmt = conn.createStatement();
-            sql = "insert into ZAK values(NULL, '"
+            sql = "insert into ZAKAZ values(NULL, '"
                     + oldName + "', '"
                     + kolvo + "', '"
                     + skladid + "', '"

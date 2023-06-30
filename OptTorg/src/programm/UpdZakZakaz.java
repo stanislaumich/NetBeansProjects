@@ -129,7 +129,7 @@ private void filltable() {
             int id = rs.getInt("ID");
             stmt.close();
             stmt = conn.createStatement();
-            sql = "select id from ZAK where NAME='" + jComboBox1.getItemAt(jComboBox1.getSelectedIndex()) + "'";
+            sql = "select ID from ZAK where NAME='" + jComboBox1.getItemAt(jComboBox1.getSelectedIndex()) + "'";
             rs = stmt.executeQuery(sql);
             int zakid = rs.getInt("ID");
             stmt.close();
