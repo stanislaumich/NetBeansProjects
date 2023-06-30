@@ -238,8 +238,6 @@ public class Tovar extends javax.swing.JFrame {
             }
         });
 
-        jTextField2.setText("jTextField2");
-
         jLabel1.setText("Товар");
 
         jLabel2.setText("Группа");
@@ -250,22 +248,12 @@ public class Tovar extends javax.swing.JFrame {
 
         jLabel5.setText("Склад");
 
-        jTextField3.setText("jTextField3");
-
-        jTextField4.setText("jTextField4");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jButton7.setText("Продажа");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton7ActionPerformed(evt);
             }
         });
-
-        jTextField5.setText("jTextField5");
 
         jLabel7.setText("Примеч.");
 
@@ -277,8 +265,6 @@ public class Tovar extends javax.swing.JFrame {
         });
 
         jLabel6.setText("Поставщик");
-
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jButton8.setText("Заказ");
         jButton8.addActionListener(new java.awt.event.ActionListener() {
@@ -318,7 +304,7 @@ public class Tovar extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox2, 0, 292, Short.MAX_VALUE))
+                                .addComponent(jComboBox2, 0, 298, Short.MAX_VALUE))
                             .addComponent(jTextField5)
                             .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
