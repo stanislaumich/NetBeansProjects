@@ -597,6 +597,64 @@ public class Tovar extends javax.swing.JFrame {
         kolvo = JOptionPane.showInputDialog("Количество");
 // продаем
 
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Unable to load class.");
+            e.printStackTrace();
+        }
+        Connection conn = null;
+        try {
+            String url = "jdbc:sqlite:base.sqlite";
+            conn = DriverManager.getConnection(url);
+            Statement stmt = null;
+            createtable();
+            stmt = conn.createStatement();
+            /*
+             + " ID INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + " TOVID            TEXT    NOT NULL, "
+                    + " NUM           INTEGER, "
+                    + " SKLADID           TEXT, "
+                    + " DT           TEXT, "
+                    + " ZAKID           TEXT)";
+            
+             */
+            String dt = "DATE";
+            // добыть через имя и SQL
+            String sql = "select * from ZAK where NAME='"+ jTable1.getValueAt(jTable1.getSelectedRow(), 4).toString()+"'";
+            ResultSet rs = stmt.executeQuery(sql);
+            String zakid = rs.getString("ID");
+            stmt.close();
+            
+            sql = "select * from SKLAD where NAME='"+ jTable1.getValueAt(jTable1.getSelectedRow(), 3).toString()+"'";
+            rs = stmt.executeQuery(sql);
+            String skladid = rs.getString("ID");
+            stmt.close();
+
+            sql = "insert into PRODA values(NULL, '"
+                    + oldName + "', '"
+                    + kolvo + "', '"
+                    + skladid + "', '"
+                    + dt + "', '"
+                    + zakid + "')";
+
+            stmt.executeUpdate(sql);
+            stmt.close();
+            // update tovar
+            
+            
+            filltable();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
 //
         String res;
         res = "Продано единиц: " + kolvo;
