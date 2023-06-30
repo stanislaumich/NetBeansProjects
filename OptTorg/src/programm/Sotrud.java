@@ -90,6 +90,7 @@ public class Sotrud extends javax.swing.JFrame {
                 i++;
             }
             stmt.close();
+            //++++++++++++
             jComboBox2.removeAllItems();
             sql = "select * from GRAPH";
             rs = stmt.executeQuery(sql);
@@ -358,10 +359,6 @@ public class Sotrud extends javax.swing.JFrame {
         jTextField1.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
         jTextField2.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 1).toString());
         jTextField3.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 2).toString());
-        //jComboBox1.set
-        //jComboBox1.setPrototypeDisplayValue(jTable1.getValueAt(jTable1.getSelectedRow(), 3).toString());
-        //jComboBox2.setPrototypeDisplayValue(jTable1.getValueAt(jTable1.getSelectedRow(), 4).toString());
-        //jComboBox1.setSelectedIndex(1);
         int j = 0;
         for (int i = 0; i < jComboBox1.getItemCount(); i++) {
             //System.out.println((String)jComboBox1.getItemAt(i)); 
