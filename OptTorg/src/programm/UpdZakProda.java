@@ -11,45 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.table.DefaultTableModel;
 
-public class Zakaz extends javax.swing.JFrame {
-
-    String oldName = "";
-
-    private void createtable() {
-        try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Unable to load class.");
-            e.printStackTrace();
-        }
-        Connection conn = null;
-        try {
-            String url = "jdbc:sqlite:base.sqlite";
-            conn = DriverManager.getConnection(url);
-            Statement stmt = null;
-            stmt = conn.createStatement();
-            String sql = "CREATE TABLE IF NOT EXISTS ZAKAZ("
-                    + " ID INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + " TOVID            TEXT    NOT NULL, "
-                    + " NUM           INTEGER, "
-                    + " SKLADID           TEXT, "
-                    + " DT           TEXT, "
-                    + " ZAKID           TEXT, STATUS TEXT)";
-            stmt.executeUpdate(sql);
-            stmt.close();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-            }
-        }
-
-    }
+public class UpdZakProda extends javax.swing.JFrame {
 
     private void filltable() {
         try {
@@ -63,30 +25,19 @@ public class Zakaz extends javax.swing.JFrame {
             String url = "jdbc:sqlite:base.sqlite";
             conn = DriverManager.getConnection(url);
             Statement stmt = null;
-            createtable();
-
+            //createtable();
             stmt = conn.createStatement();
-            String sql = "select count(*) C from PRODA P, TOVAR T, SKLAD S, ZAK Z, ststus w WHERE"
-                    + "P.ZAKID = Z.ID and P.SKLADID = S.ID and P.TOVID = T.ID";
+            //++++++++++++
+            jComboBox1.removeAllItems();
+            String sql = "select * from ZAK";
             ResultSet rs = stmt.executeQuery(sql);
-            int rowcount = rs.getInt("C");
-            sql = "select T.Name Name, p.num num, s.name sklad, p.dt dtt, z.name zname from PRODA P, TOVAR T, SKLAD S, ZAK Z, STATUS w \n"
-                    + "WHERE P.ZAKID = Z.ID and P.SKLADID = S.ID and P.TOVID = T.ID";
-            rs = stmt.executeQuery(sql);
-            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
-            dtm.setRowCount(rowcount);
             int i = 0;
             while (rs.next()) {
-
-                jTable1.setValueAt(rs.getString("NAME"), i, 0);
-                jTable1.setValueAt(rs.getString("NUM"), i, 1);
-                jTable1.setValueAt(rs.getString("SKLAD"), i, 2);
-                jTable1.setValueAt(rs.getString("DT"), i, 3);
-                jTable1.setValueAt(rs.getString("ZNAME"), i, 4);
-                jTable1.setValueAt(rs.getString("W"), i, 5);
+                jComboBox1.addItem(rs.getString("NAME"));
                 i++;
-
             }
+            stmt.close();
+            //++++++++++++
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -101,11 +52,10 @@ public class Zakaz extends javax.swing.JFrame {
         }
     }
 
-    public Zakaz() {
+    public UpdZakProda() {
         initComponents();
-        setTitle("Заказы");
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Укажите покупателя");
         filltable();
     }
 
@@ -118,23 +68,15 @@ public class Zakaz extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+        jLabel1.setText("Покупатель");
 
-            },
-            new String [] {
-                "Товар", "Количество", "Склад", "Дата", "Покупатель", "Статус"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-
-        jButton1.setText("Закрыть");
+        jButton1.setText("Выбрать");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -147,27 +89,65 @@ public class Zakaz extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 662, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBox1, 0, 348, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        this.dispose();
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Unable to load class.");
+            e.printStackTrace();
+        }
+        Connection conn = null;
+        try {
+            String url = "jdbc:sqlite:base.sqlite";
+            conn = DriverManager.getConnection(url);
+            Statement stmt = null;
+            stmt = conn.createStatement();
+            String sql = "select ID from PRODA where ZAKID = '0' order by ID DESC";
+            ResultSet rs = stmt.executeQuery(sql);
+            int id = rs.getInt("ID");
+            stmt.close();
+            stmt = conn.createStatement();
+            sql = "select id from ZAK where NAME='" + jComboBox1.getItemAt(jComboBox1.getSelectedIndex()) + "'";
+            rs = stmt.executeQuery(sql);
+            int zakid = rs.getInt("ID");
+            stmt.close();
+            stmt = conn.createStatement();
+            sql = "update PRODA set ZAKID='" + zakid + "' where ID='" + id + "'";
+            stmt.executeUpdate(sql);
+            stmt.close();
+            this.dispose();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -187,27 +167,27 @@ public class Zakaz extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Zakaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UpdZakProda.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Zakaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UpdZakProda.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Zakaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UpdZakProda.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Zakaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UpdZakProda.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Zakaz().setVisible(true);
+                new UpdZakProda().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

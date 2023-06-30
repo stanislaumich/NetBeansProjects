@@ -594,43 +594,26 @@ public class Tovar extends javax.swing.JFrame {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // оформить продажу товара в таблицу продаж или продумать про оформление заказа
         String kolvo;
+        String res;
+        String zak;
         kolvo = JOptionPane.showInputDialog("Количество");
-// продаем
-
-        try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Unable to load class.");
-            e.printStackTrace();
-        }
         Connection conn = null;
         try {
             String url = "jdbc:sqlite:base.sqlite";
             conn = DriverManager.getConnection(url);
             Statement stmt = null;
             createtable();
-            stmt = conn.createStatement();
-            /*
-             + " ID INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + " TOVID            TEXT    NOT NULL, "
-                    + " NUM           INTEGER, "
-                    + " SKLADID           TEXT, "
-                    + " DT           TEXT, "
-                    + " ZAKID           TEXT)";
-            
-             */
             String dt = "DATE";
-            // добыть через имя и SQL
-            String sql = "select * from ZAK where NAME='"+ jTable1.getValueAt(jTable1.getSelectedRow(), 4).toString()+"'";
-            ResultSet rs = stmt.executeQuery(sql);
-            String zakid = rs.getString("ID");
-            stmt.close();
-            
-            sql = "select * from SKLAD where NAME='"+ jTable1.getValueAt(jTable1.getSelectedRow(), 3).toString()+"'";
-            rs = stmt.executeQuery(sql);
-            String skladid = rs.getString("ID");
-            stmt.close();
 
+            String zakid = "0";
+            stmt = conn.createStatement();
+            String sql = "select * from SKLAD where NAME='" + jTable1.getValueAt(jTable1.getSelectedRow(), 3).toString() + "'";
+            ResultSet rs = stmt.executeQuery(sql);
+            String skladid = rs.getString("ID");
+            //res = "SKLADID: " + skladid;
+            //JOptionPane.showMessageDialog(null, res);
+            stmt.close();
+            stmt = conn.createStatement();
             sql = "insert into PRODA values(NULL, '"
                     + oldName + "', '"
                     + kolvo + "', '"
@@ -640,9 +623,18 @@ public class Tovar extends javax.swing.JFrame {
 
             stmt.executeUpdate(sql);
             stmt.close();
-            // update tovar
-            
-            
+            // update tovar уменьшить количество
+            // добыть через имя и SQL
+            stmt = conn.createStatement();
+
+            sql = "update TOVAR set NUM=NUM-" + kolvo + " where ID='" + oldName + "'";
+            stmt.executeUpdate(sql);
+            stmt.close();
+
+            UpdZakProda frm = new UpdZakProda();
+            frm.setLocationRelativeTo(null);
+            frm.setVisible(true);
+
             filltable();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -656,10 +648,6 @@ public class Tovar extends javax.swing.JFrame {
             }
         }
 //
-        String res;
-        res = "Продано единиц: " + kolvo;
-        JOptionPane.showMessageDialog(null, res);
-
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -699,13 +687,60 @@ public class Tovar extends javax.swing.JFrame {
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         String kolvo;
-        kolvo = JOptionPane.showInputDialog("Количество");
-// заказываем
-
-//
         String res;
-        res = "Заказано единиц: " + kolvo;
-        JOptionPane.showMessageDialog(null, res);
+        String zak;
+        kolvo = JOptionPane.showInputDialog("Количество");
+        Connection conn = null;
+        try {
+            String url = "jdbc:sqlite:base.sqlite";
+            conn = DriverManager.getConnection(url);
+            Statement stmt = null;
+            createtable();
+            String dt = "DATE";
+
+            String zakid = "0";
+            stmt = conn.createStatement();
+            String sql = "select * from SKLAD where NAME='" + jTable1.getValueAt(jTable1.getSelectedRow(), 3).toString() + "'";
+            ResultSet rs = stmt.executeQuery(sql);
+            String skladid = rs.getString("ID");
+            //res = "SKLADID: " + skladid;
+            //JOptionPane.showMessageDialog(null, res);
+            stmt.close();
+            stmt = conn.createStatement();
+            sql = "insert into ZAK values(NULL, '"
+                    + oldName + "', '"
+                    + kolvo + "', '"
+                    + skladid + "', '"
+                    + dt + "', '"
+                    + zakid + "', '0')";
+
+            stmt.executeUpdate(sql);
+            stmt.close();
+            // update tovar уменьшить количество
+            // добыть через имя и SQL
+            stmt = conn.createStatement();
+
+            sql = "update TOVAR set NUM=NUM-" + kolvo + " where ID='" + oldName + "'";
+            stmt.executeUpdate(sql);
+            stmt.close();
+
+            UpdZakProda frm = new UpdZakProda();
+            frm.setLocationRelativeTo(null);
+            frm.setVisible(true);
+
+            filltable();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+//
     }//GEN-LAST:event_jButton8ActionPerformed
 
     public static void main(String args[]) {

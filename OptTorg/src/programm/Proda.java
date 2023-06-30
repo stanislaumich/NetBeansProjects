@@ -78,11 +78,11 @@ public class Proda extends javax.swing.JFrame {
             
              */
             stmt = conn.createStatement();
-            String sql = "select count(*) C from PRODA P, TOVAR T, SKLAD S, ZAK Z WHERE"
+            String sql = "select count(*) C from PRODA P, TOVAR T, SKLAD S, ZAK Z WHERE "
                     + "P.ZAKID = Z.ID and P.SKLADID = S.ID and P.TOVID = T.ID";
             ResultSet rs = stmt.executeQuery(sql);
             int rowcount = rs.getInt("C");
-            sql = "select T.Name Name, p.num num, s.name sklad, p.dt dtt, z.name zname from PRODA P, TOVAR T, SKLAD S, ZAK Z \n"
+            sql = "select T.Name Name, p.num num, s.name sklad, p.dt dt, z.name zname from PRODA P, TOVAR T, SKLAD S, ZAK Z \n"
                     + "WHERE P.ZAKID = Z.ID and P.SKLADID = S.ID and P.TOVID = T.ID";
             rs = stmt.executeQuery(sql);
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();

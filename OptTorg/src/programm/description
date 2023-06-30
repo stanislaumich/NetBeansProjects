@@ -17,3 +17,19 @@
 15
 
 
+btnConfirm1.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            // Окно подтверждения c 4-мя параметрами
+               int result = JOptionPane.showConfirmDialog(
+                                      JOptionPaneTest.this, 
+                                      "Вам это нужно?",
+                                      TITLE_confirm,
+                                      JOptionPane.YES_NO_CANCEL_OPTION);
+            // Окна подтверждения c 2-мя параметрами
+            if (result == JOptionPane.YES_OPTION)
+                JOptionPane.showConfirmDialog(JOptionPaneTest.this,
+                                              "Вы не отказываетесь?");
+            else if (result == JOptionPane.NO_OPTION)
+                JOptionPane.showConfirmDialog(JOptionPaneTest.this, 
+                                              "Вы отказались?");
+        }
