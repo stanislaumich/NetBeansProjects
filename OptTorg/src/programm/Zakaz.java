@@ -15,6 +15,9 @@ public class Zakaz extends javax.swing.JFrame {
      */
     public Zakaz() {
         initComponents();
+        setTitle("Заказы");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        //filltable();
     }
 
     /**

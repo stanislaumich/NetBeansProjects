@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
 
 public class Tovar extends javax.swing.JFrame {
 
@@ -280,6 +281,11 @@ public class Tovar extends javax.swing.JFrame {
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jButton8.setText("Заказ");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -465,7 +471,7 @@ public class Tovar extends javax.swing.JFrame {
             //System.out.println((String)jComboBox1.getItemAt(i)); 
             if (jComboBox2.getItemAt(i).equals(jTable1.getValueAt(jTable1.getSelectedRow(), 3).toString())) {
                 j = i;
-               //System.out.println("."); 
+                //System.out.println("."); 
             }
         }
         jComboBox2.setSelectedIndex(j);
@@ -475,7 +481,7 @@ public class Tovar extends javax.swing.JFrame {
             //System.out.println((String)jComboBox1.getItemAt(i)); 
             if (jComboBox3.getItemAt(i).equals(jTable1.getValueAt(jTable1.getSelectedRow(), 4).toString())) {
                 j = i;
-               //System.out.println("."); 
+                //System.out.println("."); 
             }
         }
         jComboBox3.setSelectedIndex(j);
@@ -485,11 +491,11 @@ public class Tovar extends javax.swing.JFrame {
             //System.out.println((String)jComboBox1.getItemAt(i)); 
             if (jComboBox1.getItemAt(i).equals(jTable1.getValueAt(jTable1.getSelectedRow(), 5).toString())) {
                 j = i;
-               //System.out.println("."); 
+                //System.out.println("."); 
             }
         }
         jComboBox1.setSelectedIndex(j);
-        
+
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -507,7 +513,7 @@ public class Tovar extends javax.swing.JFrame {
             Statement stmt = null;
             createtable();
             stmt = conn.createStatement();
-            
+
             /*+ " ID INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + " NAME            TEXT    NOT NULL, "
                     + " DOP           TEXT, "
@@ -516,7 +522,6 @@ public class Tovar extends javax.swing.JFrame {
                     + " TOVGR           TEXT, "
                     + " NUM           INTEGER, "
                     + " PRICE           INTEGER)*/
-            
             String sql = "insert into TOVAR values(NULL, '"
                     + jTextField2.getText() + "', '"
                     + jTextField5.getText() + "', '"
@@ -539,8 +544,8 @@ public class Tovar extends javax.swing.JFrame {
                 System.out.println(ex.getMessage());
             }
         }
-        
-        
+
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -564,7 +569,7 @@ public class Tovar extends javax.swing.JFrame {
                     + jTextField5.getText() + "', SKLAD='"
                     + jComboBox2.getItemAt(jComboBox2.getSelectedIndex()) + "', POST='"
                     + jComboBox3.getItemAt(jComboBox3.getSelectedIndex()) + "', TOVGR='"
-                    + jComboBox1.getItemAt(jComboBox1.getSelectedIndex()) + "', NUM='" 
+                    + jComboBox1.getItemAt(jComboBox1.getSelectedIndex()) + "', NUM='"
                     + jTextField3.getText() + "', PRICE='"
                     + jTextField4.getText() + "' where ID='"
                     + oldName + "'";
@@ -583,12 +588,20 @@ public class Tovar extends javax.swing.JFrame {
                 System.out.println(ex.getMessage());
             }
         }
-        
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // оформить продажу товара в таблицу продаж или продумать про оформление заказа
-        
+        String kolvo;
+        kolvo = JOptionPane.showInputDialog("Количество");
+// продаем
+
+//
+        String res;
+        res = "Продано единиц: " + kolvo;
+        JOptionPane.showMessageDialog(null, res);
+
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -623,8 +636,19 @@ public class Tovar extends javax.swing.JFrame {
                 System.out.println(ex.getMessage());
             }
         }
-        
+
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        String kolvo;
+        kolvo = JOptionPane.showInputDialog("Количество");
+// заказываем
+
+//
+        String res;
+        res = "Заказано единиц: " + kolvo;
+        JOptionPane.showMessageDialog(null, res);
+    }//GEN-LAST:event_jButton8ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
