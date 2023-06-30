@@ -13,8 +13,8 @@
 11 + TOVGR - группы товаров
 12 + ZAKAZ - список заказов
 13 + PRODA - продажи товара
-14
-15
+14 LOG логирование
+15 USER - пользователи
 
 
 btnConfirm1.addActionListener(new ActionListener() {
