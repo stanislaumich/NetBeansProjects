@@ -68,6 +68,9 @@
           </Border>
         </Property>
       </Properties>
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="&#x422;&#x41e;&#x412;&#x410;&#x420;"/>
+      </AccessibilityProperties>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -99,11 +102,11 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jTextField4" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jTextField4" min="-2" pref="82" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jComboBox2" pref="298" max="32767" attributes="0"/>
+                                  <Component id="jComboBox2" pref="280" max="32767" attributes="0"/>
                               </Group>
                               <Component id="jTextField5" max="32767" attributes="0"/>
                               <Component id="jComboBox3" alignment="0" max="32767" attributes="0"/>

@@ -90,6 +90,11 @@ public class MainForm extends javax.swing.JFrame {
         jButton2.setIcon(new javax.swing.ImageIcon("S:\\NetBeansProjects\\OptTorg\\src\\programm\\icons\\bmp\\24x24\\OK.bmp")); // NOI18N
         jButton2.setText("Оформить заказ товара");
         jButton2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Товар в наличии");
         jButton3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -277,7 +282,9 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        // TODO add your handling code here:
+        Sotrud frm = new Sotrud();
+        frm.setLocationRelativeTo(null);
+        frm.setVisible(true);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
@@ -329,8 +336,16 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        Tovar frm = new Tovar();
+        frm.setLocationRelativeTo(null);
+        frm.setVisible(true);        
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Zakaz frm = new Zakaz();
+        frm.setLocationRelativeTo(null);
+        frm.setVisible(true); 
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     public static void main(String args[]) {
 
