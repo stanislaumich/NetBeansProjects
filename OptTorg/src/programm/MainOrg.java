@@ -36,16 +36,63 @@ public class MainOrg extends javax.swing.JFrame {
                     + " GLBUH         TEXT    NOT NULL" + ")";
             stmt.executeUpdate(sql);
             stmt.close();
-
+            //++++++++++++
+            jComboBox3.removeAllItems();
+            sql = "select FAM||' '||NAME||' '||OTCH as NAME from SOTRUD";
+            ResultSet rs = stmt.executeQuery(sql);
+            int i = 0;
+            while (rs.next()) {
+                jComboBox3.addItem(rs.getString("NAME"));
+                i++;
+            }
+            stmt.close();
+            //++++++++++++
+            //++++++++++++
+            jComboBox4.removeAllItems();
+            sql = "select FAM||' '||NAME||' '||OTCH as NAME from SOTRUD";
+            rs = stmt.executeQuery(sql);
+            i = 0;
+            while (rs.next()) {
+                jComboBox4.addItem(rs.getString("NAME"));
+                i++;
+            }
+            stmt.close();
+            //++++++++++++
+            
+            
             stmt = conn.createStatement();
             sql = "select * from COMPANY";
-            ResultSet rs = stmt.executeQuery(sql);
+            rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 jTextField7.setText(rs.getString("NAME"));
                 jTextField10.setText(rs.getString("BANK"));
                 jTextField11.setText(rs.getString("SCHET"));
+                int j = 0;
+        for (i = 0; i < jComboBox3.getItemCount(); i++) {
+            //System.out.println((String)jComboBox1.getItemAt(i)); 
+            if (jComboBox3.getItemAt(i).equals(rs.getString("DIREKTOR"))) {
+                j = i;
+                //System.out.println("."); 
+            }
+        }
+        jComboBox3.setSelectedIndex(j);
+         j = 0;
+        for (i = 0; i < jComboBox4.getItemCount(); i++) {
+            //System.out.println((String)jComboBox1.getItemAt(i)); 
+            if (jComboBox4.getItemAt(i).equals(rs.getString("GLBUH"))) {
+                j = i;
+                //System.out.println("."); 
+            }
+        }
+        jComboBox4.setSelectedIndex(j);
+        
+        
+        
             }
             stmt.close();
+         //+++++++++++++++
+         
+            
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
