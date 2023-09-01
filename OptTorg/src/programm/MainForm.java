@@ -40,6 +40,10 @@ public class MainForm extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null); 
         setTitle("Оптовая торговля, версия 1.0");
+        Login frm = new Login();
+        frm.setLocationRelativeTo(null);
+        frm.setVisible(true);
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
