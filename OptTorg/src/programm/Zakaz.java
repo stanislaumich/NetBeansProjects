@@ -290,6 +290,40 @@ public class Zakaz extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // Записать заказ
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Unable to load class.");
+            e.printStackTrace();
+        }
+        Connection conn = null;
+        try {
+            String url = "jdbc:sqlite:base.sqlite";
+            conn = DriverManager.getConnection(url);
+            Statement stmt = null;
+            createtable();
+
+            stmt = conn.createStatement();
+            String sql = "insert into ZAKAZ () VALUES()";
+            stmt.executeUpdate(sql);
+            
+            sql = "update TOVAR set num = num - "+ "0" +"  where name="+"name";
+            stmt.executeUpdate(sql);
+            
+
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
