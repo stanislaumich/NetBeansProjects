@@ -4,19 +4,143 @@
  */
 package programm;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Lz42
  */
 public class Login extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Login
-     */
+    private void createtable() {
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Unable to load class.");
+            e.printStackTrace();
+        }
+        Connection conn = null;
+        try {
+            String url = "jdbc:sqlite:base.sqlite";
+            conn = DriverManager.getConnection(url);
+            Statement stmt = null;
+            stmt = conn.createStatement();
+            String sql = "CREATE TABLE IF NOT EXISTS USR ("
+                    + "    name VARCHAR (100), "
+                    + "    pass VARCHAR (100)  )";
+            stmt.executeUpdate(sql);
+            stmt.close();
+
+            stmt = conn.createStatement();
+            sql = "CREATE TABLE IF NOT EXISTS USRL ("
+                    + "name VARCHAR (100))";
+            stmt.executeUpdate(sql);
+            stmt.close();
+
+            stmt = conn.createStatement();
+            sql = "CREATE TABLE IF NOT EXISTS LOG ("
+                    + " log VARCHAR (500) )";
+            stmt.executeUpdate(sql);
+            stmt.close();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+
+    }
+
+    private void log(String ls) {
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Unable to load class.");
+            e.printStackTrace();
+        }
+        Connection conn = null;
+
+        try {
+            String url = "jdbc:sqlite:base.sqlite";
+            conn = DriverManager.getConnection(url);
+            Statement stmt = null;
+            createtable();
+
+            stmt = conn.createStatement();
+            System.out.println("Ok login");
+            String sql = " insert into LOG (LOG) values('" + ls + "')";
+            stmt.executeUpdate(sql);
+            stmt.close();
+
+            //++++++++++++
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
+
+    private void filltable() {
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Unable to load class.");
+            e.printStackTrace();
+        }
+        Connection conn = null;
+        try {
+            String url = "jdbc:sqlite:base.sqlite";
+            conn = DriverManager.getConnection(url);
+            Statement stmt = null;
+            createtable();
+            stmt = conn.createStatement();
+            //++++++++++++
+            jComboBox1.removeAllItems();
+            String sql = "select * from USR";
+            ResultSet rs = stmt.executeQuery(sql);
+            int i = 0;
+            while (rs.next()) {
+                jComboBox1.addItem(rs.getString("NAME"));
+                i++;
+            }
+            stmt.close();
+            //++++++++++++
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
+
     public Login() {
         initComponents();
-        
+        setLocationRelativeTo(null);
+        setTitle("Вход");
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        filltable();
     }
 
     /**
@@ -36,14 +160,18 @@ public class Login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("jLabel1");
+        jLabel1.setText("USER:");
 
-        jLabel2.setText("jLabel2");
+        jLabel2.setText("PASS:");
 
-        jTextField1.setText("jTextField1");
         jTextField1.setInheritsPopupMenu(true);
 
-        jButton1.setText("jButton1");
+        jButton1.setText("Ok");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -61,7 +189,7 @@ public class Login extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, 0, 345, Short.MAX_VALUE))
+                        .addComponent(jComboBox1, 0, 352, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton1)))
@@ -85,6 +213,59 @@ public class Login extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // пытаемся логиниться
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Unable to load class.");
+            e.printStackTrace();
+        }
+        Connection conn = null;
+        try {
+            String url = "jdbc:sqlite:base.sqlite";
+            conn = DriverManager.getConnection(url);
+            Statement stmt = null;
+            createtable();
+            stmt = conn.createStatement();
+            //++++++++++++            
+            String sql = "select count(*) as C from USR where name='" + jComboBox1.getItemAt(jComboBox1.getSelectedIndex()) + "' and PASS='" + jTextField1.getText() + "'";
+            ResultSet rs = stmt.executeQuery(sql);
+            int i = 0;
+            String ss = "";
+            while (rs.next()) {
+                ss = rs.getString("C");
+                System.out.println(ss);
+                i++;
+            }
+            stmt.close();
+            if (ss.equals("1")) {
+                stmt = conn.createStatement();
+                System.out.println("Ok login");
+                sql = " insert into USRL (name) values('" + jComboBox1.getItemAt(jComboBox1.getSelectedIndex()) + "')";
+                stmt.executeUpdate(sql);
+                log("LOGIN: "+jComboBox1.getItemAt(jComboBox1.getSelectedIndex()));
+                stmt.close();
+            }
+            else
+            {
+             log("LOGIN FAILED: "+jComboBox1.getItemAt(jComboBox1.getSelectedIndex()));   
+            } 
+            this.dispose();
+            //++++++++++++
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

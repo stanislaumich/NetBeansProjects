@@ -2,9 +2,13 @@ package programm;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class MainForm extends javax.swing.JFrame {
+
+    String usr = "";
 
     public static void connect() {
         try {
@@ -38,12 +42,50 @@ public class MainForm extends javax.swing.JFrame {
 
     public MainForm() {
         initComponents();
-        setLocationRelativeTo(null); 
+        setLocationRelativeTo(null);
         setTitle("Оптовая торговля, версия 1.0");
         Login frm = new Login();
         frm.setLocationRelativeTo(null);
         frm.setVisible(true);
-        
+        frm.setAlwaysOnTop(true);
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Unable to load class.");
+            e.printStackTrace();
+        }
+        Connection conn = null;
+        try {
+            String url = "jdbc:sqlite:base.sqlite";
+            conn = DriverManager.getConnection(url);
+            Statement stmt = null;
+            stmt = conn.createStatement();
+            //++++++++++++            
+            String sql = "select name from USRL";
+            ResultSet rs = stmt.executeQuery(sql);
+            int i = 0;
+            String ss = "";
+            while (rs.next()) {
+                usr = rs.getString("name");
+                System.out.println(ss);
+                i++;
+            }
+            stmt.close();
+
+            //++++++++++++
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -81,6 +123,11 @@ public class MainForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("E-mail Contacts");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jButton1.setIcon(new javax.swing.ImageIcon("S:\\NetBeansProjects\\OptTorg\\src\\programm\\icons\\bmp\\24x24\\Add.bmp")); // NOI18N
         jButton1.setText("Оформить приход товара");
@@ -342,14 +389,46 @@ public class MainForm extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         Tovar frm = new Tovar();
         frm.setLocationRelativeTo(null);
-        frm.setVisible(true);        
+        frm.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         Zakaz frm = new Zakaz();
         frm.setLocationRelativeTo(null);
-        frm.setVisible(true); 
+        frm.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // удалить пользователя в логине
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Unable to load class.");
+            e.printStackTrace();
+        }
+        Connection conn = null;
+        try {
+            String url = "jdbc:sqlite:base.sqlite";
+            conn = DriverManager.getConnection(url);
+            Statement stmt = null;
+            stmt = conn.createStatement();
+            String sql = "delete from USRL where name='" + usr + "'";
+            stmt.executeUpdate(sql);
+            stmt.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+
+        }
+
+    }//GEN-LAST:event_formWindowClosing
 
     public static void main(String args[]) {
 
@@ -357,8 +436,7 @@ public class MainForm extends javax.swing.JFrame {
             public void run() {
                 //frm.setLocationRelativeTo(null);
                 new MainForm().setVisible(true);
-                
-                
+
             }
         });
     }
