@@ -70,12 +70,13 @@ public class Zakaz extends javax.swing.JFrame {
             createtable();
 
             stmt = conn.createStatement();
-            String sql = "select count(*) C from ZAKAZ P, TOVAR T, SKLAD S, ZAK Z WHERE "
-                    + "P.ZAKID = Z.ID and P.SKLADID = S.ID and P.TOVID = T.ID";
+            String sql = "select count(*) C from ZAKAZ P, TOVAR T, SKLAD S, ZAK Z, STATUS st WHERE "
+                    + "P.ZAKID = Z.ID and P.SKLADID = S.ID and P.TOVID = T.ID and st.id = P.status ";
             ResultSet rs = stmt.executeQuery(sql);
             int rowcount = rs.getInt("C");
-            sql = "select t.id id, T.Name Name, p.num num, s.name sklad, p.dt dtt, z.name zname, p.status w, p.id zid from ZAKAZ P, TOVAR T, SKLAD S, ZAK Z "
-                    + "WHERE P.ZAKID = Z.ID and P.SKLADID = S.ID and P.TOVID = T.ID";
+            sql = "select t.id id, T.Name Name, p.num num, s.name sklad, p.dt dtt, z.name zname, st.name w, "
+                    + "p.id zid from ZAKAZ P, TOVAR T, SKLAD S, ZAK Z, STATUS st "
+                    + "WHERE P.ZAKID = Z.ID and P.SKLADID = S.ID and P.TOVID = T.ID and st.id=P.status ";
             rs = stmt.executeQuery(sql);
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             dtm.setRowCount(rowcount);
@@ -89,6 +90,7 @@ public class Zakaz extends javax.swing.JFrame {
                 jTable1.setValueAt(rs.getString("W"), i, 5);
                 jTable1.setValueAt(rs.getString("ID"), i, 6);
                 jTable1.setValueAt(rs.getString("zID"), i, 7);
+                //jTable1.setValueAt(rs.getString("zID"), i, 8);
                 i++;
             }
 //++++++++++++
@@ -177,7 +179,15 @@ public class Zakaz extends javax.swing.JFrame {
             new String [] {
                 "Товар", "Количество", "Склад", "Дата", "Покупатель", "Статус", "ID", "ZID"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);

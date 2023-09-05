@@ -73,6 +73,12 @@ public class MainForm extends javax.swing.JFrame {
             }
             stmt.close();
 
+            stmt = conn.createStatement();
+            sql = "CREATE TABLE STATUS ("
+                    + "id   INTEGER, "
+                    + "NAME VARCHAR (100))";
+            stmt.executeUpdate(sql);
+
             //++++++++++++
         } catch (SQLException e) {
             System.out.println(e.getMessage());
