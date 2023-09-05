@@ -9,6 +9,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class Zakaz extends javax.swing.JFrame {
@@ -36,7 +39,7 @@ public class Zakaz extends javax.swing.JFrame {
                     + " DT           TEXT, "
                     + " ZAKID           TEXT, STATUS TEXT)";
             stmt.executeUpdate(sql);
-   
+
             stmt.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -67,26 +70,26 @@ public class Zakaz extends javax.swing.JFrame {
             createtable();
 
             stmt = conn.createStatement();
-            String sql = "select count(*) C from PRODA P, TOVAR T, SKLAD S, ZAK Z WHERE "
+            String sql = "select count(*) C from ZAKAZ P, TOVAR T, SKLAD S, ZAK Z WHERE "
                     + "P.ZAKID = Z.ID and P.SKLADID = S.ID and P.TOVID = T.ID";
             ResultSet rs = stmt.executeQuery(sql);
             int rowcount = rs.getInt("C");
-            sql = "select T.Name Name, p.num num, s.name sklad, p.dt dtt, z.name zname, e.status w from PRODA P, TOVAR T, SKLAD S, ZAK Z, ZAKAZ E \n"
+            sql = "select t.id id, T.Name Name, p.num num, s.name sklad, p.dt dtt, z.name zname, p.status w, p.id zid from ZAKAZ P, TOVAR T, SKLAD S, ZAK Z "
                     + "WHERE P.ZAKID = Z.ID and P.SKLADID = S.ID and P.TOVID = T.ID";
             rs = stmt.executeQuery(sql);
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             dtm.setRowCount(rowcount);
             int i = 0;
             while (rs.next()) {
-
                 jTable1.setValueAt(rs.getString("NAME"), i, 0);
                 jTable1.setValueAt(rs.getString("NUM"), i, 1);
                 jTable1.setValueAt(rs.getString("SKLAD"), i, 2);
                 jTable1.setValueAt(rs.getString("DTT"), i, 3);
                 jTable1.setValueAt(rs.getString("ZNAME"), i, 4);
                 jTable1.setValueAt(rs.getString("W"), i, 5);
+                jTable1.setValueAt(rs.getString("ID"), i, 6);
+                jTable1.setValueAt(rs.getString("zID"), i, 7);
                 i++;
-
             }
 //++++++++++++
             jComboBox1.removeAllItems();
@@ -98,7 +101,7 @@ public class Zakaz extends javax.swing.JFrame {
                 i++;
             }
             stmt.close();
-            
+
             //++++++++++++
             jComboBox3.removeAllItems();
             sql = "select * from SKLAD";
@@ -109,7 +112,7 @@ public class Zakaz extends javax.swing.JFrame {
                 i++;
             }
             stmt.close();
-            
+
             //++++++++++++
             jComboBox2.removeAllItems();
             sql = "select * from TOVAR";
@@ -120,7 +123,7 @@ public class Zakaz extends javax.swing.JFrame {
                 i++;
             }
             stmt.close();
-            
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
@@ -172,7 +175,7 @@ public class Zakaz extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Товар", "Количество", "Склад", "Дата", "Покупатель", "Статус"
+                "Товар", "Количество", "Склад", "Дата", "Покупатель", "Статус", "ID", "ZID"
             }
         ));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -290,28 +293,72 @@ public class Zakaz extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // Записать заказ
+
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
             System.out.println("Unable to load class.");
             e.printStackTrace();
         }
+
         Connection conn = null;
         try {
             String url = "jdbc:sqlite:base.sqlite";
             conn = DriverManager.getConnection(url);
-            Statement stmt = null;
-            createtable();
+            Statement stmt = conn.createStatement();
+            String sql = "select * from TOVAR where name='" + jComboBox2.getItemAt(jComboBox2.getSelectedIndex()) + "'";
+            ResultSet rs = stmt.executeQuery(sql);
+            int tovid = 0;
+            //while (rs.next()) {
+            tovid = rs.getInt("ID");
+            //}
+            stmt.close();
 
             stmt = conn.createStatement();
-            String sql = "insert into ZAKAZ () VALUES()";
+            sql = "select * from ZAK where name='" + jComboBox1.getItemAt(jComboBox1.getSelectedIndex()) + "'";
+            rs = stmt.executeQuery(sql);
+            int zakid = rs.getInt("ID");
+            stmt.close();
+            stmt = conn.createStatement();
+            sql = "select * from SKLAD where name='" + jComboBox3.getItemAt(jComboBox3.getSelectedIndex()) + "'";
+            rs = stmt.executeQuery(sql);
+            int skladid = rs.getInt("ID");
+            stmt.close();
+            /*
+            stmt = conn.createStatement();
+            sql = "select num from TOVAR where name='" + jComboBox3.getItemAt(jComboBox3.getSelectedIndex()) + "' "
+                    + "AND sklad='" + jComboBox3.getItemAt(jComboBox3.getSelectedIndex()) + "'";
+            rs = stmt.executeQuery(sql);
+            int num = rs.getInt("num");
+            stmt.close();
+             */
+//if (num > Byte.valueOf(jTextField1.getText())) {
+            Date date = new Date();
+            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+            String strDate = formatter.format(date);
+            stmt = conn.createStatement();
+            sql = "INSERT INTO ZAKAZ ("
+                    + "ID, "
+                    + "TOVID, "
+                    + "NUM, "
+                    + "SKLADID, "
+                    + "DT, "
+                    + "ZAKID, "
+                    + "STATUS)"
+                    + "VALUES ("
+                    + "NULL, "
+                    + tovid + ", '"
+                    + jTextField1.getText() + "', "
+                    + skladid + ", '"
+                    + strDate + "', "
+                    + zakid + ", "
+                    + "'Заказан')";
             stmt.executeUpdate(sql);
-            
-            sql = "update TOVAR set num = num - "+ "0" +"  where name="+"name";
-            stmt.executeUpdate(sql);
-            
 
-            
+            sql = "update TOVAR set num = num - " + jTextField1.getText() + "  where name='" + jComboBox2.getItemAt(jComboBox2.getSelectedIndex()) + "'";
+            stmt.executeUpdate(sql);
+            filltable();
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } finally {
@@ -323,11 +370,38 @@ public class Zakaz extends javax.swing.JFrame {
                 System.out.println(ex.getMessage());
             }
         }
-        
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // Удалить заказ
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Unable to load class.");
+            e.printStackTrace();
+        }
+
+        Connection conn = null;
+        try {
+            String url = "jdbc:sqlite:base.sqlite";
+            conn = DriverManager.getConnection(url);
+            Statement stmt = conn.createStatement();
+            String sql = "DELETE from ZAKAZ where ID=" + jTable1.getValueAt(jTable1.getSelectedRow(), 7).toString() + "";
+            stmt.executeUpdate(sql);
+            filltable();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -338,7 +412,7 @@ public class Zakaz extends javax.swing.JFrame {
         //jTextField4.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 7).toString());
         oldName = jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString();
         //+++++++++++++++++ sklad
-        
+
         int j = 0;
         for (int i = 0; i < jComboBox2.getItemCount(); i++) {
             //System.out.println((String)jComboBox1.getItemAt(i)); 
@@ -348,9 +422,9 @@ public class Zakaz extends javax.swing.JFrame {
             }
         }
         jComboBox2.setSelectedIndex(j);
-        
+
         //+++++++++++++++++ sklad
-         j = 0;
+        j = 0;
         for (int i = 0; i < jComboBox3.getItemCount(); i++) {
             //System.out.println((String)jComboBox1.getItemAt(i)); 
             if (jComboBox3.getItemAt(i).equals(jTable1.getValueAt(jTable1.getSelectedRow(), 2).toString())) {
@@ -360,7 +434,7 @@ public class Zakaz extends javax.swing.JFrame {
         }
         jComboBox3.setSelectedIndex(j);
         //+++++++++++++++++ GR
-        
+
         j = 0;
         for (int i = 0; i < jComboBox1.getItemCount(); i++) {
             //System.out.println((String)jComboBox1.getItemAt(i)); 
@@ -370,8 +444,8 @@ public class Zakaz extends javax.swing.JFrame {
             }
         }
         jComboBox1.setSelectedIndex(j);
-        
-        
+
+
     }//GEN-LAST:event_jTable1MouseClicked
 
     /**
