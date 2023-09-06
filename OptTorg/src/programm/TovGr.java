@@ -174,11 +174,7 @@ public class TovGr extends javax.swing.JFrame {
 
         jLabel2.setText("Название");
 
-        jTextField1.setText("jTextField1");
-
         jLabel3.setText("Описание");
-
-        jTextField2.setText("jTextField2");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
