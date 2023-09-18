@@ -1,0 +1,35 @@
+Список таблиц
+
+1 + COMPANY - Сведения об организации
+2 + GRAPH - Графики работы сотрудников
+3 + DOLG - Должности сотрудников
+4 + SOTRUD - сотрудники организации
+5 + SKLAD - список складов организации
+6 + ZAK - список заказчиков организации
+7 + POST - список поставщиков организации
+8 + STATUS - статусы заказов ( выполнен, ожидает)++++++++++
+9 + USRL пользователи залогиненые в систему
+10 + TOVAR - товары
+11 + TOVGR - группы товаров
+12 + ZAKAZ - список заказов
+13 + PRODA - продажи товара
+14 + LOG логирование
+15 + USR - пользователи
+
+
+btnConfirm1.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            // Окно подтверждения c 4-мя параметрами
+               int result = JOptionPane.showConfirmDialog(
+                                      JOptionPaneTest.this, 
+                                      "Вам это нужно?",
+                                      TITLE_confirm,
+                                      JOptionPane.YES_NO_CANCEL_OPTION);
+            // Окна подтверждения c 2-мя параметрами
+            if (result == JOptionPane.YES_OPTION)
+                JOptionPane.showConfirmDialog(JOptionPaneTest.this,
+                                              "Вы не отказываетесь?");
+            else if (result == JOptionPane.NO_OPTION)
+                JOptionPane.showConfirmDialog(JOptionPaneTest.this, 
+                                              "Вы отказались?");
+        }
